@@ -18,6 +18,9 @@ jobs:
         with:
           python-version: 3.8  # Adjust the Python version as needed
 
+      - name: Install requests module
+        run: pip install requests
+
       - name: Generate language stats
         run: python generate_language_stats.py
 
