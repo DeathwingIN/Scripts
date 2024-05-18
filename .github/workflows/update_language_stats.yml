@@ -1,8 +1,9 @@
 name: Update Language Stats
 
 on:
-  schedule:
-    - cron: '0 */3 * * *'  # Runs every 3 hours
+  push:
+    branches:
+      - main  # Change this to your default branch if different
 
 jobs:
   update_language_stats:
@@ -34,8 +35,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config --global user.name 'DeathWingIN'
-          git config --global user.email 'imeshnirmal1u@gmail.com'
+          git config --global user.name 'Your GitHub Username'
+          git config --global user.email 'youremail@example.com'
 
       - name: Commit changes
         run: |
