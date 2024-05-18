@@ -1,0 +1,48 @@
+name: Update Language Stats
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'  # Runs every 3 hours
+
+jobs:
+  update_language_stats:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8  # Adjust the Python version as needed
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt  # Make sure to have a requirements.txt file with necessary dependencies
+
+      - name: Generate language stats
+        run: python generate_language_stats.py
+
+      - name: Move image to assets directory
+        run: |
+          mkdir -p assets
+          mv language_stats.png assets/
+
+      - name: Update README
+        run: |
+          sed -i 's|!\[Top Languages\](assets/language_stats.png)|![Top Languages](assets/language_stats.png)|' README.md
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'DeathWingIN'
+          git config --global user.email 'imeshnirmal1u@gmail.com'
+
+      - name: Commit changes
+        run: |
+          git add README.md assets/language_stats.png
+          git commit -m 'Update language stats'
+        
+      - name: Push changes
+        run: git push
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
